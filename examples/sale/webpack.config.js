@@ -115,10 +115,7 @@ module.exports = {
         value: '273745271',
         url: 'https://h5.ele.me'
       }],
-      noInfo: false,
-      storagies: {
-        test: '1234'
-      }
+      noInfo: false
     }),
   ],
   resolve: {
@@ -137,7 +134,7 @@ module.exports = {
   devtool: '#eval-source-map'
 }
 
-if (process.env.NODE_ENV === 'production') {
+/* if (process.env.NODE_ENV === 'production') {
   module.exports.devtool = '#source-map'
   module.exports.mode = 'production'
   // http://vue-loader.vuejs.org/en/workflow/production.html
@@ -146,4 +143,4 @@ if (process.env.NODE_ENV === 'production') {
       minimize: true
     })
   ])
-}
+} */

@@ -131,7 +131,7 @@ class Server extends EventEmitter {
   resiveSocketData(conn) {
     const { log } = this
     return async (data) => {
-      const msg = JSON.parse(data)
+      const msg = JSON.parse(data);console.log('msg',msg);
       switch (msg.type) {
         case 'generate': {
           if (!msg.data) return log.info(msg)
@@ -140,7 +140,7 @@ class Server extends EventEmitter {
           const preGenMsg = 'begin to generator skeleton screen'
           log.info(preGenMsg)
           sockWrite(this.sockets, 'console', preGenMsg)
-          try {
+          try {console.log('origin',origin);
             const skeletonScreens = await this.skeleton.renderRoutes(origin)
             // CACHE html
             this.routesData = {}
