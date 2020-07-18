@@ -9,6 +9,7 @@
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
   },
   "dependencies": {
+    "puppeteer": "^5.2.0",
     "vue": "^2.5.16",
     "vue-router": "^3.0.1"
   },
