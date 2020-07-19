@@ -11,7 +11,8 @@ $ set PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1
 ```
 然后可以手工下载 
 
-
+链接：https://pan.baidu.com/s/1o_vzF3r01daoquqmaTlAWw 
+提取码：0000
 
 放在这个目录中
-C:\bprepare\page2-skeleton-webpack-plugin\examples\sale\node_modules\puppeteer\.local-chromium\win64-768783\chrome-win
+node_modules\puppeteer\.local-chromium\win64-768783\chrome-win

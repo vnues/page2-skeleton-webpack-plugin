@@ -134,13 +134,14 @@ class Server extends EventEmitter {
       const msg = JSON.parse(data);console.log('msg',msg);
       switch (msg.type) {
         case 'generate': {
-          if (!msg.data) return log.info(msg)
+          if (!msg.data)
+             return log.info(msg)
           this.origin = msg.data
           const origin = msg.data
           const preGenMsg = 'begin to generator skeleton screen'
           log.info(preGenMsg)
           sockWrite(this.sockets, 'console', preGenMsg)
-          try {console.log('origin',origin);
+          try {
             const skeletonScreens = await this.skeleton.renderRoutes(origin)
             // CACHE html
             this.routesData = {}
@@ -235,7 +236,8 @@ class Server extends EventEmitter {
       const { staticPath } = this
       const pathName = path.join(__dirname, staticPath)
       let fileName = await hasha(decHtml, { algorithm: 'md5' })
-      fileName += '.html'
+      fileName += '.html';
+      console.log('fileName',fileName);
       myFs.mkdirpSync(pathName)
       await promisify(myFs.writeFile.bind(myFs))(path.join(pathName, fileName), decHtml, 'utf8')
       return fileName
