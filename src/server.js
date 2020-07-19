@@ -131,7 +131,7 @@ class Server extends EventEmitter {
   resiveSocketData(conn) {
     const { log } = this
     return async (data) => {
-      const msg = JSON.parse(data);console.log('msg',msg);
+      const msg = JSON.parse(data);
       switch (msg.type) {
         case 'generate': {
           if (!msg.data)
@@ -237,7 +237,6 @@ class Server extends EventEmitter {
       const pathName = path.join(__dirname, staticPath)
       let fileName = await hasha(decHtml, { algorithm: 'md5' })
       fileName += '.html';
-      console.log('fileName',fileName);
       myFs.mkdirpSync(pathName)
       await promisify(myFs.writeFile.bind(myFs))(path.join(pathName, fileName), decHtml, 'utf8')
       return fileName
