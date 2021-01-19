@@ -18,6 +18,7 @@ const Skeleton = require('./skeleton')
 
 const myFs = new MemoryFileSystem()
 
+// ! 启动一个服务端应用 该应用也就是骨架屏应用
 class Server extends EventEmitter {
   constructor(options) {
     super()
@@ -43,6 +44,8 @@ class Server extends EventEmitter {
 
     const staticFiles = await promisify(fs.readdir)(path.resolve(__dirname, '../client'))
 
+    // ! staticPath http://localhost:7890/__webpack_page_skeleton__/index.bundle.js
+    // ! 就是在这步挂载client-socket静态资源的
     staticFiles
       .filter(file => /\.bundle/.test(file))
       .forEach((file) => {
@@ -74,6 +77,10 @@ class Server extends EventEmitter {
 
   initSocket() {
     const { listenServer, log } = this
+    // ! /__webpack_page_skeleton__/sockjs.bundle.js
+    // ! __webpack_page_skeleton__构建会替换
+    console.log('sockjs_url', `/${this.staticPath}/sockjs.bundle.js`)
+    // ! 出于安全考虑 需要引入客户端socket脚本
     const sockjsServer = sockjs.createServer({
       sockjs_url: `/${this.staticPath}/sockjs.bundle.js`,
       log(severity, line) {
@@ -83,8 +90,11 @@ class Server extends EventEmitter {
       }
     })
     this.sockjsServer = sockjsServer
+    // ! 第5步：将sockjs服务挂载到http服务上
     sockjsServer.installHandlers(listenServer, { prefix: '/socket' })
     sockjsServer.on('connection', (conn) => {
+      // connection对象
+      console.log('connection', conn)
       if (this.sockets.indexOf(conn) === -1) {
         this.sockets.push(conn)
         // log.info(`client socket: ${conn.id.split('-')[0]}... connect to server`)
@@ -131,15 +141,16 @@ class Server extends EventEmitter {
   resiveSocketData(conn) {
     const { log } = this
     return async (data) => {
-      const msg = JSON.parse(data);
+      const msg = JSON.parse(data)
+      // ! 定义下消息的类型
       switch (msg.type) {
         case 'generate': {
-          if (!msg.data)
-             return log.info(msg)
+          if (!msg.data) { return log.info(msg) }
           this.origin = msg.data
           const origin = msg.data
           const preGenMsg = 'begin to generator skeleton screen'
           log.info(preGenMsg)
+          //  ! Server 端主动推送消息到指定 socket-client
           sockWrite(this.sockets, 'console', preGenMsg)
           try {
             const skeletonScreens = await this.skeleton.renderRoutes(origin)
@@ -152,6 +163,7 @@ class Server extends EventEmitter {
               this.routesData[route] = {
                 url: origin + route,
                 skeletonPageUrl,
+                // ! 生成二维码
                 qrCode: await generateQR(skeletonPageUrl),
                 html
               }
@@ -199,6 +211,7 @@ class Server extends EventEmitter {
         }
 
         case 'writeShellFile': {
+          console.log('writeShellFile....')
           sockWrite([conn], 'console', 'before write shell files...')
           const { routesData, options } = this
           try {
@@ -228,7 +241,7 @@ class Server extends EventEmitter {
   }
 
   /**
-   * 将 sleleton 模块生成的 html 写入到内存中。
+   * ! 将 sleleton 模块生成的 html 写入到内存中。
    */
   async writeMagicHtml(html) {
     const decHtml = addDprAndFontSize(html)
@@ -236,7 +249,7 @@ class Server extends EventEmitter {
       const { staticPath } = this
       const pathName = path.join(__dirname, staticPath)
       let fileName = await hasha(decHtml, { algorithm: 'md5' })
-      fileName += '.html';
+      fileName += '.html'
       myFs.mkdirpSync(pathName)
       await promisify(myFs.writeFile.bind(myFs))(path.join(pathName, fileName), decHtml, 'utf8')
       return fileName

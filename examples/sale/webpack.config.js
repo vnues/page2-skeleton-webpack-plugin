@@ -11,7 +11,7 @@ const cssnext = require('postcss-cssnext')({
     'Android >= 4.0',
   ],
 })
-const SkeletonPlugin = require('page2-skeleton-webpack-plugin').SkeletonPlugin
+const SkeletonPlugin = require('../../index.js').SkeletonPlugin
 
 module.exports = {
   mode: 'development',
@@ -36,7 +36,7 @@ module.exports = {
             options: {
               ident: 'postcss',
               sourceMap: true,
-              plugins: (loader) => [
+              plugins: loader => [
                 require('postcss-import')({ root: loader.resourcePath }),
                 require('postcss-nested'),
                 cssnext,
@@ -53,10 +53,10 @@ module.exports = {
       {
         test: /\.js$/,
         loader: 'babel-loader',
-        exclude: file => (
+        exclude: file =>
           /node_modules/.test(file) &&
           !/\.vue\.js/.test(file)
-        )
+
       },
       {
         test: /\.(png|jpg|gif|svg)$/,
@@ -74,7 +74,7 @@ module.exports = {
     }),
     new VueLoaderPlugin(),
     new SkeletonPlugin({
-      pathname: path.resolve(__dirname, `./shell`),
+      pathname: path.resolve(__dirname, './shell'),
       staticDir: path.resolve(__dirname, './dist'),
       routes: ['/'],
       port: '7890',

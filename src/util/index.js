@@ -125,7 +125,7 @@ const outputSkeletonScreen = async (originHtml, options, log) => {
   }))
 }
 
-// Server 端主动推送消息到制定 socket
+// Server 端主动推送消息到指定 socket-client
 const sockWrite = (sockets, type, data) => {
   sockets.forEach((sock) => {
     sock.write(JSON.stringify({

@@ -33,7 +33,7 @@
             </div>
           </div>
           <div class="right-button">
-            <button :class="{'none': !hasProduct}">{{hasProduct ? '马上抢' : '进店逛逛'}}</button>
+            <button @click="handleClick" :class="{'none': !hasProduct}">{{hasProduct ? '马上抢' : '进店逛逛'}}</button>
           </div>
         </div>
       </div>
@@ -54,6 +54,13 @@
         return +this.product.promotionStock !== 0
       },
     },
+    methods:{
+      handleClick(){
+        debugger
+        console.log("handleClick")
+        this.$router.push({path:'/search'})
+      }
+    }
   }
 </script>
 

@@ -15,8 +15,8 @@ module.exports = {
     }, {
       test: /\.css$/,
       use: [
-        "style-loader",
-        "css-loader"
+        'style-loader',
+        'css-loader'
       ]
     }, {
       test: /\.tpl\.html$/,
@@ -30,7 +30,8 @@ module.exports = {
   },
   plugins: [
     new VueLoaderPlugin()
-  ]
+  ],
+  devtool: 'source-map'
 }
 
 if (process.env.NODE_ENV === 'production') {

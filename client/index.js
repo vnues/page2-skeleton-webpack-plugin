@@ -5,10 +5,12 @@ import Vue from 'vue/dist/vue.esm'
 import { log } from './utils'
 import Console from './components/console/index.vue'
 
+// port 7890
 const port = window._pageSkeletonSocketPort // eslint-disable-line no-underscore-dangle
 
 // TODO headless 打开的页面不连接 socket
 const sock = new SockJS(`http://localhost:${port}/socket`)
+
 const vm = createView(sock)
 
 sock.onopen = function() {
@@ -20,6 +22,8 @@ window.sock = sock
 
 sock.onmessage = function(e) {
   const { type, data } = JSON.parse(e.data)
+  console.log('type===>', type)
+  console.log('data===>', data)
   switch (type) {
   case 'success': {
     vm.$data.text = data
@@ -61,6 +65,7 @@ function createView(sock) {
     created() {
       this.$nextTick(() => {
         const self = this
+        // ! 当访问全局对象toggleBar开启骨架屏页面
         Object.defineProperty(window, 'toggleBar', {
           enumerable: false,
           configrable: true,
@@ -70,7 +75,7 @@ function createView(sock) {
             return '🐶'
           }
         })
-
+        // ! 设置快捷键开启骨架屏页面
         document.body.addEventListener('keydown', e => {
           const keyCode = e.keyCode || e.which || e.charCode
           const ctrlKey = e.ctrlKey || e.metaKey
@@ -83,6 +88,7 @@ function createView(sock) {
     methods: {
       handleClick() {
         this.text = 'IN PROGRESS...'
+        // ! 点击开关按钮发送socket
         sock.send(JSON.stringify({ type: 'generate', data: window.location.origin }))
       }
     }

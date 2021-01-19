@@ -16,7 +16,8 @@ import {
   DropdownItem
 } from 'element-ui'
 
-;[
+
+[
   Button,
   Dialog,
   ButtonGroup,

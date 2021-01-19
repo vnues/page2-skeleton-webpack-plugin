@@ -1,6 +1,6 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const MiniCssExtractPlugin = require("mini-css-extract-plugin")
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CleanPlugin = require('clean-webpack-plugin')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 
@@ -32,7 +32,7 @@ module.exports = {
       test: /\.css$/,
       use: [
         process.env.NODE_ENV === 'production' ? MiniCssExtractPlugin.loader : 'style-loader',
-        "css-loader"
+        'css-loader'
       ]
     }, {
       test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,

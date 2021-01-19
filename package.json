@@ -94,5 +94,8 @@
   },
   "eslintIgnore": [
     "templates"
-  ]
+  ],
+  "standard":{
+    "ignore":"*"
+  }
 }

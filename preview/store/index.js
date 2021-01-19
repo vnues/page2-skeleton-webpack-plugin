@@ -38,7 +38,7 @@ const actions = {
   WRITE_SHELL({ commit }) {
     socketWrite('writeShellFile')
   },
-  SAVE_CODE ({ commit }, value) {
+  SAVE_CODE({ commit }, value) {
     socketWrite('saveShellFile', value)
   },
   WRITE_SHELL_SUCCESS({ commit }, message) {

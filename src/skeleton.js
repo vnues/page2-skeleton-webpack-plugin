@@ -1,10 +1,20 @@
 'use strict'
 
+/* eslint-disable no-prototype-builtins */
+/* eslint-disable no-undef */
+
+/**
+ * * 操纵浏览器 这点跟Html-entry不一样,因为我们要等到整个项目运行完渲染完我们再去拿
+ */
 const puppeteer = require('puppeteer')
 const devices = require('puppeteer/DeviceDescriptors')
 const { parse, toPlainObject, fromPlainObject, generate } = require('css-tree')
 const { sleep, genScriptContent, htmlMinify, collectImportantComments } = require('./util')
 
+/**
+ * ! Skeleton类主要封装了生成骨架屏代码的操作
+ * ! 借助puppeteer
+ */
 class Skeleton {
   constructor(options = {}, log) {
     this.options = options

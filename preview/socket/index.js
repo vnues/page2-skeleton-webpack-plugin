@@ -19,21 +19,21 @@ const initSock = store => {
   sock.onmessage = function(e) {
     const { type, data } = JSON.parse(e.data)
     switch (type) {
-      case 'url':
-      case 'update': {
-        const updateData = JSON.parse(data)
-        store.dispatch('GET_URL', updateData)
-        if (type === 'url') {
-          bus.$emit('set-code', updateData)
-        }
-        break
+    case 'url':
+    case 'update': {
+      const updateData = JSON.parse(data)
+      store.dispatch('GET_URL', updateData)
+      if (type === 'url') {
+        bus.$emit('set-code', updateData)
       }
-      case 'console': {
-        store.dispatch('WRITE_SHELL_SUCCESS', data)
-        break
-      }
+      break
     }
-   }
+    case 'console': {
+      store.dispatch('WRITE_SHELL_SUCCESS', data)
+      break
+    }
+    }
+  }
 
   sock.onclose = function() {
     store.dispatch('GET_CONNECT', false)
